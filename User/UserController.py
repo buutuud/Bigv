@@ -1,23 +1,25 @@
 # -*- coding=utf-8 -*-
-from datetime import datetime as DateTime, timedelta as TimeDelta
-from UserMd import User as Model
-from Company import CompanyMd
+import logging
 from flask import Blueprint
 from flask import request
 from flask import jsonify
+from UserMd import User as Model
+from Company import CompanyMd
+from datetime import datetime as DateTime, timedelta as TimeDelta
+
 
 bp = Blueprint('User', __name__)
 
 @bp.route('/api/user/register', methods=['POST'])
 def user_reg():
-    dat = request.json
-    Model.drop_collection()
+    dat = request.json    
     user = Model.objects(username=dat['username']).first()
     users = Model.objects(macaddrs__contains=dat['macaddrs']).all()
     if len(users) >= 1:
         return jsonify({'err': 2, 'msg': u'用户多次注册'})
-
+        
     if user is None:
+        logging.debug('User IS None \n')
         user = Model(username=dat['username'],
                     password=dat['password'],                                        
                     macaddrs=dat['macaddrs'])
