@@ -13,7 +13,7 @@ class User(db.Document):
     company  = db.StringField()
     createat = db.DateTimeField()
     deadtime = db.DateTimeField()
-    lastlogin = db.DateTimeField()
+    lastlogin = db.StringField()
     macaddrs = db.StringField()
     def __unicode__(self):
         return self.username
