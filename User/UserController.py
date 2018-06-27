@@ -1,4 +1,5 @@
 # -*- coding=utf-8 -*-
+from datetime import datetime as DateTime, timedelta as TimeDelta
 from UserMd import User as Model
 from Company import CompanyMd
 from flask import Blueprint
@@ -18,10 +19,11 @@ def user_reg():
 
     if user is None:
         user = Model(username=dat['username'],
-                    password=dat['password'],                    
-                    createat=dat['createat'],
-                    deadtime=dat['deadtime'],
+                    password=dat['password'],                                        
                     macaddrs=dat['macaddrs'])
+        t = DateTime.today() 
+        user.createat = t
+        user.deadtime = t + TimeDelta(days=1)
 
         c = CompanyMd.Company.objects(company_name='default').first()
         if not dat.has_key('companyname'):            
