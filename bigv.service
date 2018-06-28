@@ -1,0 +1,17 @@
+[Unit]
+Description=uWSGI bigv
+After=network.target
+
+[Service]
+WorkingDirectory=/work/JJServer/
+PIDFile=/run/bigv.pid
+
+ExecStart=/usr/local/bin/uwsgi --ini bigv.ini
+ExecReload=/usr/local/binuwsgi --reload /run/bigv.pid
+ExecStop=/sbin/start-stop-daemon --quiet --stop --retry QUIT/5 --pidfile /run/bigv.pid
+
+TimeoutStopSec=3
+KillMode=mixed
+
+[Install]
+WantedBy=multi-user.target
